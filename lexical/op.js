@@ -3,14 +3,14 @@ function op(sourceCode, index) {
 	let state = 0
 	let op = ''
 
-	while(true) {
+	while (true) {
 
 		const c = sourceCode[index++]
 		op += c
 
-		switch(state) {
+		switch (state) {
 			case 0: {
-				switch(c){
+				switch (c) {
 					case '+':
 						state = 1
 						break
@@ -43,59 +43,59 @@ function op(sourceCode, index) {
 					case ';':
 						return makeToken('op', op)
 					default:
-						throw new LexicalError(`not an op ${op} at ${index-1}`)
+						throw new LexicalError(`not an op ${op} at ${index - 1}`)
 				}
 			} //end of case 0
 			case 1: {
-				if(c === '+') {
+				if (c === '+') {
 					return makeToken('op', '++')
 				}
 				return makeToken('op', '+')
 			}
 			case 2: {
-				if(c === '-') {
+				if (c === '-') {
 					return makeToken('op', '--')
 				}
 				return makeToken('op', '-')
 			}
 			case 5: {
-				if(c === '=' ) {
+				if (c === '=') {
 					return makeToken('op', '==')
 				}
 				return makeToken('op', '=')
 			}
 			case 6: {
-				if(c === '&') {
+				if (c === '&') {
 					return makeToken('op', '&&')
 				}
 				return makeToken('op', '&')
 			}
 			case 7: {
-				if(c === '|') {
+				if (c === '|') {
 					return makeToken('op', '||')
 				}
 				return makeToken('op', '|')
 			}
 			case 8: {
-				if(c === '=') {
+				if (c === '=') {
 					return makeToken('op', '>=')
 				}
 				return makeToken('op', '>')
 			}
 			case 9: {
-				if(c === '=') {
+				if (c === '=') {
 					return makeToken('op', '<=')
 				}
 				return makeToken('op', '<')
 			}
 			case 10: {
-				if(c === '=') {
+				if (c === '=') {
 					return makeToken('op', '!=')
 				}
 				return makeToken('op', '!')
 			}
 			default:
-				throw new LexicalError(`not an op ${op} at ${index-1}`)
+				throw new LexicalError(`not an op ${op} at ${index - 1}`)
 		}
 
 	}

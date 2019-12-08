@@ -1,6 +1,6 @@
 const { LexicalError, makeToken } = require('./util') 
 
-function number(sourceCode, index) {
+function number(sourceCode, index, linenumber) {
 	let state = 0
 	let number = ""
 	while(true) {
@@ -17,7 +17,7 @@ function number(sourceCode, index) {
 					number += c
 					state = 3
 				} else {
-					throw new LexicalError(`not a number ${c}`)
+					throw new LexicalError(`not a number ${c} in line ${linenumber}`)
 				}
 				break
 			}
@@ -49,7 +49,7 @@ function number(sourceCode, index) {
 					number += c
 					state = 5
 				} else {
-					throw new LexicalError(`not a number ${c}`)
+					throw new LexicalError(`not a number ${c} in line ${linenumber}`)
 				}
 				break
 			}
@@ -74,14 +74,4 @@ function number(sourceCode, index) {
 	}
 }
 
-// number123("132121231. ", 0)
-// VM322:5 0 1 
-// VM322:5 5 3 111111
-// VM322:5 5 2 1111113
-// VM322:5 5 1 11111132
-// VM322:5 5 2 111111321
-// VM322:5 5 1 1111113212
-// VM322:5 5 2 11111132121
-// VM322:5 5 3 111111321212
-// VM322:5 5 1 1111113212123
-// VM322:5 5 . 11111132121231
+module.exports = number

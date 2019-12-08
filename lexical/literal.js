@@ -16,7 +16,7 @@ function literal(sourceCode, index) {
 					state = 1
 					str += c
 				} else {
-					throw new LexicalError(`not a illegal operator ${c} at pos ${index-1}`)
+					throw new LexicalError(`not a illegal operator ${c} at ${index-1} in line ${linenumber}`)
 				}
 				break
 			}

@@ -1,5 +1,5 @@
 const { makeToken, LexicalError } = require('./util')
-function op(sourceCode, index) {
+function op(sourceCode, index, linenumber) {
 	let state = 0
 	let op = ''
 
@@ -43,7 +43,7 @@ function op(sourceCode, index) {
 					case ';':
 						return makeToken('op', op)
 					default:
-						throw new LexicalError(`not an op ${op} at ${index - 1}`)
+						throw new LexicalError(`not an op ${op} at ${index - 1} in line ${linenumber}`)
 				}
 			} //end of case 0
 			case 1: {
@@ -95,7 +95,7 @@ function op(sourceCode, index) {
 				return makeToken('op', '!')
 			}
 			default:
-				throw new LexicalError(`not an op ${op} at ${index - 1}`)
+				throw new LexicalError(`not an op ${op} at ${index - 1} in line ${linenumber}`)
 		}
 
 	}

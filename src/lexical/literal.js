@@ -1,6 +1,8 @@
 const { makeToken, LexicalError, KEYWORDS } = require('./util')
 
-function literal(sourceCode, index) {
+console.log(KEYWORDS.length)
+
+function literal(sourceCode, index=0) {
 	let state = 0
 	let str = ''
 
@@ -12,7 +14,7 @@ function literal(sourceCode, index) {
 		switch(state) {
 			case 0: {
 				const c = getNextChar()
-				if (/[A-Za-z]/.match(c)) {
+				if (c.match(/[A-Za-z]/)) {
 					state = 1
 					str += c
 				} else {
@@ -22,11 +24,11 @@ function literal(sourceCode, index) {
 			}
 			case 1: {
 				const c = getNextChar()
-				if (/[A-Za-z0-9]/.match(c)) {
+				if (c.match(/[A-Za-z0-9]/)) {
 					state = 1
 					str += c
 				} else {
-					if (KEYWORDS.include(str)) {
+					if (KEYWORDS.includes(str)) {
 						return makeToken('keyword', str)
 					} else {
 						return makeToken('id', str)

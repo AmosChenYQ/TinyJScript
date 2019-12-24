@@ -1,4 +1,7 @@
 const { makeToken, LexicalError } = require('./lexical/util')
+const op = require('./lexical/op')
+const literal = require('./lexical/literal')
+const number = require('./lexical/number')
 /**
  * 
  * @param {*} sourceCode
@@ -29,7 +32,7 @@ function lexer(sourceCode) {
 
 		const c = sourceCode[i]
 			if (c.match(/[A-Za-z]/)) {
-				getTokenLiteral(souceCode, i, lineno)
+				getTokenLiteral(sourceCode, i, lineno)
 			} else if (c.match(/[0-9.]/)) {
 				getTokenNumber(sourceCode, i, lineno)
 			} else if (c.match(/[+-\\*/&|=!;()]/)) {

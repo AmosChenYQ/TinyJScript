@@ -1,7 +1,5 @@
 const { makeToken, LexicalError, KEYWORDS } = require('./util')
 
-console.log(KEYWORDS.length)
-
 function literal(sourceCode, index=0) {
 	let state = 0
 	let str = ''

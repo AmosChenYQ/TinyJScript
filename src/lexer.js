@@ -37,6 +37,10 @@ function lexer(sourceCode) {
 				getTokenNumber(sourceCode, i, lineno)
 			} else if (c.match(/[+-\\*/&|=!;()]/)) {
 				getTokenOp(sourceCode, i, lineno)
+			} else if(c === '{' || c === '}') {
+				i++
+				tokens.push( makeToken('block', c, lineno) )
+				
 			} else if (c === '\n' || c === '\r') {
 				i++
 				lineno++

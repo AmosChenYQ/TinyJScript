@@ -4,7 +4,7 @@ function op(sourceCode, index, linenumber) {
 	let op = ''
 
 	while (true) {
-
+		
 		const c = sourceCode[index++]
 		op += c
 
@@ -45,6 +45,7 @@ function op(sourceCode, index, linenumber) {
 					default:
 						throw new LexicalError(`not an op ${op} at ${index - 1} in line ${linenumber}`)
 				}
+				break
 			} //end of case 0
 			case 1: {
 				if (c === '+') {

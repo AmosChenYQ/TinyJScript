@@ -1,4 +1,4 @@
-
+const lexer = require('./lexer')
 // E -> E + T  | E - T | T
 // E -> TE'
 // E' -> +E | -E | e
@@ -7,68 +7,106 @@
 // T -> LT' | (E)
 // T' -> *T | /T | e
 
-1 + 2 * 3
-function parseE(tokens, index = 0) {
-    const term = parseT(tokens, index)
-    const expr = parseEPlus(tokens, index + ?)
-    return {
-        left: term,
-        ...expr
+class Parser {
+	constructor(){
+    this.index = 0
+	}
+	eat(value) {
+    const token = this.tokens[this.index]
+    if(token.value !== value) {
+      throw 'syntax error'
     }
-}
+    this.index ++
+  }
 
-function parseEPlus(tokens, index) {
-    const token = tokens[index]
-    if(token && (token.value === "+" || token.value === "-")) {
-        const expr = parseE(tokens, index + 1)
-        return {
-            op: token.value,
-            right: expr
-        }
+  parse(sourceCode){
+		this.tokens = lexer(sourceCode)
+    this.index = 0
+    return this.parseExpr()
+  }
+
+	parseExpr() {
+		const term = this.parseTerm()
+		const expr = this.parseExprR()
+		if(expr) {
+			return {
+				left: term,
+				...expr
+			}
+		} else {
+			return term
+		}
+	}
+
+	parseExprR() {
+		const token = this.tokens[this.index]
+		if(token && (token.value === "+" || token.value === "-")) {
+			this.eat(token.value)
+			const expr = this.parseExpr()
+			return {
+				op: token,
+				right: expr
+			}
+		}
+		return null
+	}
+
+	parseTerm() {
+		const token = this.tokens[this.index]
+		if(token.value === '(') {
+			this.eat('(')
+			const expr = this.parseExpr()
+			this.eat(')')
+			return expr
+		} else {
+			const literal = this.parseLiteral()
+			const term = this.parseTermR()
+			if(term) {
+				return {
+					left: literal,
+					...term
+				}
+			} else {
+				return literal
+			}
+		}
+	}
+	
+	parseTermR(){
+    const token = this.tokens[this.index]
+  
+    if(token && (token.value === '*' || token.value === '/')){
+      this.eat(token.value)
+      const term = this.parseTerm()
+      return {
+        op : token.value,
+        right : term
+      }
     }
     return null
-}
+	}
 
-function parseT(tokens, index) {
-    const token = tokens[index]
-    if(token.value === "(") {
-        return parseE(tokens, index + 1)        
-    } else {
-        const literal = parseL(tokens, index++)
-        const term = parseTPlus(tokens, index)
-        return {
-            left: literal,
-            ...term
-        }
+	parseLiteral() {
+    const token = this.tokens[this.index]
+  
+    if(token.type === 'id' ){
+      this.eat(token.value)
+      return {
+        type : 'id',
+        id : token.value
+      }
+    }else if(token.type === 'number'){
+      this.eat(token.value)
+      return {
+        type : 'number',
+        value : token.value
+      }
+    }else {
+      throw 'syntax error'
     }
+  }
+
 }
 
-function parseTPlus(tokens, index) {
-    const token = tokens[index]
-    if(token && (token.value === "*" || token.value === "/")) {
-        const term = parseT(tokens, index + 1)
-        return {
-            op: token.value,
-            right: term
-        }
-    }
-    return null
-}
 
-function parseL(tokens, index) {
-    const token = tokens[index]
-    if(token.type === "id") {
-        return {
-            type: "id",
-            id: token.value
-        }
-    } else if(token.type === "number") {
-        return {
-            type: "number",
-            id: token.value
-        }
-    } else {
-        throw 'syntax error'
-    }
-}
-
+module.exports = Parser

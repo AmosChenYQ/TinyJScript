@@ -142,13 +142,16 @@ class Parser {
   }
 
 	/**
-	 * 
+	 * Arguments -> expr | expr,arguments | e
 	 */
   parseArguments() {
     let list = []
     let expr = null
     while ((expr = this.parseExpr())) {
       list.push(expr)
+      if(this.lookahead.value === ',') {
+        this.match(',')
+      }
     }
     return new Args(list)
   }
@@ -158,7 +161,12 @@ class Parser {
 	 */
   parseIfStmt() {
     this.match('if')
+    this.match('(')
     const expr = this.parseExpr()
+    if(!expr) {
+      throw `syntax error at line ${this.lookahead.lineno} of token ${this.lookahead.value}`
+    }
+    this.match(')')
     const ifBlock = this.parseBlock()
 
     if (this.lookahead.value === 'else') {
@@ -217,9 +225,9 @@ class Parser {
       }
       return new Id(value)
     } else if (this.lookahead.type === 'string') {
-      throw 'not impl.'
+      throw 'not impl string yet.'
     } else {
-      throw `syntax error, expect a factor but ${this.lookahead.value} found`
+      throw `syntax error, expect a factor but ${this.lookahead.value} found in line ${this.lookahead.lineno}`
     }
   }
 

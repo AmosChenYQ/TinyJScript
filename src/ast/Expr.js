@@ -16,7 +16,7 @@ class Expr {
     this.left && this.left.gen && this.left.gen(il, scope)
     this.right && this.right.gen && this.right.gen(il, scope)
     const tempVar = scope.bindTempVar()
-    il.add(`set ${tempVar} ${this.left.rvalue()} ${this.op} ${this.right.rvalue()}`)
+    il.add(`set ${tempVar} ${this.left.rvalue(scope)} ${this.op} ${this.right.rvalue(scope)}`)
     this._rval = tempVar
   }
 

@@ -59,7 +59,6 @@ class Args {
   constructor(args, type = 'call') {
     this.args = args
     this.type = type
-    this.length = this.args.length
   }
 
   print(level = 0) {

@@ -30,6 +30,9 @@ class Id extends Factor {
 
   rvalue(scope) {  
     if(scope) {
+      console.log("********************")
+      console.log(scope.table)
+      console.log(this.value)
       var _rvalue = `$t${scope.table[this.value].index}@${scope.id}`
       return _rvalue
     }

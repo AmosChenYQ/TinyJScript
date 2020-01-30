@@ -56,7 +56,7 @@ class Parser {
 	 */
   parseStmts() {
     const stmts = []
-    while (this.lookahead.value !== "eof" && this.lookahead.value !== "}") {
+    while (this.lookahead.type !== "eof" && this.lookahead.value !== "}") {
       stmts.push(this.parseStmt())
     }
     return stmts
@@ -106,6 +106,7 @@ class Parser {
     this.match(id)
 
     this.match('(')
+    console.log("parsing args")
     const args = this.parseFuncArguments()
     this.match(')')
 
@@ -122,23 +123,28 @@ class Parser {
     return new ReturnStmt(expr)
   }
 
-	/**
-	 * Args -> <id> | <id>,Args | e
-	 */
+  /**
+   * Args -> <id> | <id>,Args | ϵ
+   */
   parseFuncArguments() {
+    const list = this.parseFuncArgumentsReturnList()
+    return new Args(list, 'function')
+  }
+
+  parseFuncArgumentsReturnList() {
     let list = []
-    if (this.lookahead.type === 'id') {
+    if(this.lookahead.type === 'id') {
       const id = this.lookahead.value
       this.match(id)
       list.push(new Id(id))
-      if (this.lookahead.value === ',') {
+      if(this.lookahead.value === ',') {
         this.match(',')
-        list = list.concat(this.parseFuncArguments())
-      } else {
-        return []
+        list = list.concat(this.parseFuncArgumentsReturnList())
       }
-      return new Args(list, 'function')
+    } else {
+      return []
     }
+    return list
   }
 
 	/**

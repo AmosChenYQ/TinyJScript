@@ -41,6 +41,7 @@ function op(sourceCode, index, linenumber) {
 					case '(':
 					case ')':
 					case ';':
+					case ',':
 						return makeToken('op', op)
 					default:
 						throw new LexicalError(`not an op ${op} at ${index - 1} in line ${linenumber}`)

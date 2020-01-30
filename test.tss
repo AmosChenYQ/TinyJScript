@@ -1,0 +1,43 @@
+{
+  "id": 1,
+  "table": {
+    "print": {
+      "type": "function",
+      "index": 0
+    },
+    "test": {
+      "type": "function",
+      "index": 1
+    },
+    "$t2": {
+      "type": "number",
+      "index": 2
+    }
+  },
+  "children": [
+    {
+      "id": 2,
+      "table": {
+        "m": {
+          "type": "number",
+          "index": 0
+        },
+        "n": {
+          "type": "number",
+          "index": 1
+        },
+        "x": {
+          "type": "number",
+          "index": 2
+        },
+        "$t3": {
+          "type": "number",
+          "index": 3
+        }
+      },
+      "children": [],
+      "type": "function",
+      "argc": 2
+    }
+  ]
+}

@@ -87,7 +87,7 @@ class Args {
       for(let i = 0; i < this.args.length; i++) {
         const expr = this.args[i]
         expr.gen && expr.gen(il, scope)
-        il.add(`padd ${expr.rvalue()}`)
+        il.add(`pass ${expr.rvalue()}`)
       }
     }
   }
